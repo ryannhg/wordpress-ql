@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+
+  api:
+    image: node:10
+    ports:
+      - 4000:4000
+    volumes:
+      - ./api/src:/src
+    command: [ 'npm', 'run', 'docker' ]
