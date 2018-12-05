@@ -10,9 +10,9 @@ ENV DB_PASS=password
 ENV SITE_URL=localhost:8080
 ENV SITE_TITLE=WordpressQL
 
-ENV ADMIN_USER=admin
-ENV ADMIN_PASSWORD=admin
-ENV ADMIN_EMAIL=admin@example.com
+ENV ADMIN_USER=username
+ENV ADMIN_PASSWORD=password
+ENV ADMIN_EMAIL=user@example.com
 
 # Install dockerize (https://github.com/jwilder/dockerize)
 USER root
@@ -22,7 +22,8 @@ RUN curl -sL https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_
 USER www-data
 
 # Create wp-config
-CMD wp core download --skip-content \
+CMD ( \
+wp core download --skip-content \
 && wp config create \
 --dbhost=$DB_HOST \
 --dbname=$DB_NAME \
@@ -38,4 +39,8 @@ CMD wp core download --skip-content \
 --admin_password=$ADMIN_PASSWORD \
 --admin_email=$ADMIN_EMAIL \
 --skip-email \
+&& wp plugin install custom-post-type-ui --version=1.6.1 --activate \
+&& wp plugin install advanced-custom-fields --version=5.7.7 --activate \
+# && wp user set-role 1 editor \ 
+|| true) \
 && wp server --host=0.0.0.0
