@@ -1,13 +1,17 @@
 version: '3'
 services:
 
-  # api:
-  #   image: node:10
-  #   ports:
-  #     - 4000:4000
-  #   volumes:
-  #     - ./api/src:/src
-  #   command: [ 'npm', 'run', 'docker' ]
+  api:
+    image: node:10
+    environment:
+      DB_HOST: db
+    ports:
+      - 4000:4000
+    volumes:
+      - ./api/src:/src
+      - ./api/package.json:/package.json
+      - ./api/package-lock.json:/package-lock.json
+    command: [ 'npm', 'run', 'docker' ]
 
   db:
     image: mariadb
