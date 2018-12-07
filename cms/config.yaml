@@ -1,0 +1,32 @@
+version: 1
+
+pages:
+  home:
+    options:
+      label: Homepage
+      path: /
+    fields:
+      hero:
+        title: Text
+        subtitle: Text?
+        image: Image
+  people:
+    options:
+      label: People Landing
+      path: /people
+    fields:
+      hero:
+        title: Text
+
+posts:
+  people:
+    options:
+      label: People
+      singular_label: Person
+    fields:
+      name:
+        first: Text
+        middle: Text?
+        last: Text
+      email: Text
+      phone: Text
