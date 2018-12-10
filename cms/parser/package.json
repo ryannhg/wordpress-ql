@@ -1,0 +1,15 @@
+{
+  "name": "@wordpressql/parser",
+  "version": "1.0.0",
+  "description": "Convert YAML to Wordpress JSON",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ryan Haskell-Glatz",
+  "license": "ISC",
+  "dependencies": {
+    "pluralize": "^7.0.0",
+    "yaml": "^1.0.3"
+  }
+}

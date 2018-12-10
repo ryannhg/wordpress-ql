@@ -28,5 +28,8 @@ posts:
         first: Text
         middle: Text?
         last: Text
+      bio:
+        main: Text
+        additional: Text?
       email: Text
       phone: Text
