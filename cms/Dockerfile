@@ -53,7 +53,6 @@ wp core download --skip-content  \
 # Install plugins
 && wp plugin install custom-post-type-ui --version=1.6.1 --activate \
 && wp plugin install advanced-custom-fields --version=5.7.7 --activate \
-|| true) \
 # Copy over themes
 && cp -r /themes /var/www/html/wp-content/themes \
 && wp theme activate headless-theme \
@@ -61,5 +60,8 @@ wp core download --skip-content  \
 && wp cptui import --type=post_type --data-path=/post_types.json \
 && wp cptui import --type=taxonomy --data-path=/taxonomies.json \
 # Disable admin user \
-# && wp user set-role 1 editor \ 
+&& wp user set-role 1 editor \
+# Skip all that if any step fails (Wordpress is already installed)
+|| true) \
+# Start web server
 && wp server --host=0.0.0.0
