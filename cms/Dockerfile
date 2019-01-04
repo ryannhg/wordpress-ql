@@ -21,17 +21,24 @@ RUN curl -sL https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_
   | tar -C /usr/bin -xzvf -
 USER www-data
 
+# Copy theme for ACF Sync
+COPY ./themes /themes
+
 # Create wp-config
 CMD ( \
-wp core download --skip-content \
+# Download latest wordpress
+wp core download --skip-content  \
+# Create wp-config
 && wp config create \
 --dbhost=$DB_HOST \
 --dbname=$DB_NAME \
 --dbuser=$DB_USER \
 --dbpass=$DB_PASS \
 --skip-check \
+# Wait for mySQL to be ready
 && dockerize -wait tcp://$DB_HOST:$DB_PORT -timeout 30s \
 && wp db create \
+# Install Wordpress
 && wp core install \
 --url=$SITE_URL \
 --title=$SITE_TITLE \
@@ -39,8 +46,13 @@ wp core download --skip-content \
 --admin_password=$ADMIN_PASSWORD \
 --admin_email=$ADMIN_EMAIL \
 --skip-email \
+# Install plugins
 && wp plugin install custom-post-type-ui --version=1.6.1 --activate \
 && wp plugin install advanced-custom-fields --version=5.7.7 --activate \
-# && wp user set-role 1 editor \ 
 || true) \
+# Copy over themes
+&& cp -r /themes /var/www/html/wp-content/themes \
+&& wp theme activate headless-theme \
+# Disable admin user \
+# && wp user set-role 1 editor \ 
 && wp server --host=0.0.0.0
