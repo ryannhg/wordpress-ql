@@ -12,3 +12,38 @@ This project hopes to leverage the work Wordpress has done, and combine it with 
 ## Try it out!
 
 1. __`docker-compose up`__
+
+
+## Make models with code, not clicks
+
+```yaml
+# Define your pages
+pages:
+  home:
+    # Define their fields
+    fields:
+      hero:
+        title: Text
+        backgroundImage: Image
+        caption: RichText
+        cta:
+          label: Text
+          url: Page
+
+# Define custom post types
+posts:
+  people:
+    # You can provide options too!
+    options:
+      label: People
+      singular_label: Person
+    fields:
+      photo: Image
+      name:
+        first: Text
+        middle: Text?
+        last: Text
+      bio:
+        main: RichText
+        additional: RichText?
+```
