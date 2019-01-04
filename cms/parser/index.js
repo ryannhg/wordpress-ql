@@ -9,7 +9,7 @@ const readFile = (path) =>
     )
   )
 
-const configProperties = [ 'pages', 'posts', 'taxomonies' ]
+const configProperties = ['pages', 'posts', 'taxomonies']
 
 const isNotAnObject = (thing) =>
   thing && typeof thing !== 'object'
@@ -27,16 +27,27 @@ const validate = (config = {}) =>
     }
   })
 
-// const types = ({ pages }) =>
-//   'TODO'
-
 const kvp = (obj) =>
   Object.keys(obj).map(key => ({
     key,
     value: obj[key]
   }))
 
-const fieldGroups = ({ posts, pages }) => [
+const fromKvp = [
+  (obj, { key, value }) => {
+    obj[key] = value
+    return obj
+  },
+  {}
+]
+
+const smush = [
+  (big, small) => big.concat(small),
+  []
+]
+
+// Field groups
+const makeFieldGroups = ({ posts, pages }) => [
   ...kvp(posts).map(fieldGroup)
 ]
 let counter = {}
@@ -48,7 +59,7 @@ const groupKey = (name) => `group_${name}_${id('group')}`
 const fieldKey = (name) => `field_${name}_${id('field')}`
 
 const capitalize = (str = '') =>
-  [ str[0].toUpperCase(), ...str.slice(1) ].join('')
+  [str[0].toUpperCase(), ...str.slice(1)].join('')
 const prettify = (slug) =>
   capitalize(slug).split('-').join(' ')
 
@@ -146,12 +157,10 @@ const makeFields = fields =>
     })
     .filter(a => a)
     .map(field)
-    // .filter(a => a)
+// .filter(a => a)
 
-// const taxonomies = ({ taxonomies }) =>
-//   'TODO'
-
-const writeTo = (path) => (data) =>
+// File System Utilities
+const writeTo = (path, data) =>
   new Promise((resolve, reject) =>
     fs.writeFile(path, JSON.stringify(data), { encoding: 'utf8' }, (err) =>
       err ? reject(err) : resolve(data)
@@ -165,13 +174,94 @@ const mkdir = path => data => {
   return data
 }
 
+// Post Types
+const makePostTypes = ({ posts }) => [
+  kvp(posts).map(makePostType).reduce(...fromKvp)
+].reduce(...smush)
+
+const makePostType = ({ key, value: { options = {}, taxonomies } }) => ({
+  key,
+  value: {
+    'name': key,
+    'label': options.label || prettify(key),
+    'singular_label': options.singular_label || prettify(key),
+    'description': options.description || '',
+    'public': 'true',
+    'publicly_queryable': 'true',
+    'show_ui': 'true',
+    'show_in_nav_menus': 'true',
+    'show_in_rest': 'true',
+    'rest_base': '',
+    'rest_controller_class': '',
+    'has_archive': 'false',
+    'has_archive_string': '',
+    'exclude_from_search': 'false',
+    'capability_type': 'post',
+    'hierarchical': 'false',
+    'rewrite': 'true',
+    'rewrite_slug': '',
+    'rewrite_withfront': 'true',
+    'query_var': 'true',
+    'query_var_slug': '',
+    'menu_position': '',
+    'show_in_menu': 'true',
+    'show_in_menu_string': '',
+    'menu_icon': '',
+    'supports': [
+      'title'
+    ],
+    'taxonomies': taxonomies || [],
+    'labels': {
+      'menu_name': '',
+      'all_items': '',
+      'add_new': '',
+      'add_new_item': '',
+      'edit_item': '',
+      'new_item': '',
+      'view_item': '',
+      'view_items': '',
+      'search_items': '',
+      'not_found': '',
+      'not_found_in_trash': '',
+      'parent_item_colon': '',
+      'featured_image': '',
+      'set_featured_image': '',
+      'remove_featured_image': '',
+      'use_featured_image': '',
+      'archives': '',
+      'insert_into_item': '',
+      'uploaded_to_this_item': '',
+      'filter_items_list': '',
+      'items_list_navigation': '',
+      'items_list': '',
+      'attributes': '',
+      'name_admin_bar': ''
+    },
+    'custom_supports': ''
+  }
+})
+
+const makeTaxonomies = ({ posts }) =>
+  console.log('TODO: taxonomies') || []
+
 const start = _ =>
   readFile('../config.yaml')
     .then(yaml.parse)
     .then(validate)
-    .then(fieldGroups)
+    .then(config => [
+      makeFieldGroups(config),
+      makePostTypes(config),
+      makeTaxonomies(config)
+    ])
+    .then(([fields, postTypes, taxomonies]) => [
+      { filename: '../dist/fields.json', data: fields },
+      { filename: '../dist/post_types.json', data: postTypes },
+      { filename: '../dist/taxonomies.json', data: taxomonies }
+    ])
     .then(mkdir('../dist'))
-    .then(writeTo('../dist/fields.json'))
+    .then(files => Promise.all(
+      files.map(({ filename, data }) => writeTo(filename, data)))
+    )
     .catch(console.error)
 
 start()
