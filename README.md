@@ -9,20 +9,40 @@ This project hopes to leverage the work Wordpress has done, and combine it with 
 
 ### You provide this:
 
-```ts
-type Query {
-  books: [Book]
-}
+```yaml
+pages:
+  home:
+    options:
+      label: Homepage
+      path: /
+    fields:
+      hero:
+        title: Text
+        subtitle: Text?
+        image: Image
+  people:
+    options:
+      label: People Landing
+      path: /people
+    fields:
+      hero:
+        title: Text
 
-type Book {
-  title: String
-  author: Author
-}
-
-type Author {
-  name: String
-  bio: String
-}
+posts:
+  people:
+    options:
+      label: People
+      singular_label: Person
+    fields:
+      name:
+        first: Text
+        middle: Text?
+        last: Text
+      email: Text
+      phone: Text
+      bio:
+        main: Wysiwyg
+        additional: Wysiwyg?
 ```
 
 
