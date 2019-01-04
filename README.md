@@ -5,9 +5,9 @@
 
 Wordpress has a nice UI. It also has some nice plugins for extending that UI.
 
-This project hopes to leverage the work Wordpress has done, and combine it with the nice modelling and querying experience of GraphQL
+This project hopes to leverage the work Wordpress has done, and combine it with the nice modelling and querying experience of GraphQL.
 
-[Read more](/ryannhg/wordpress-ql/tree/master/cms)
+[Read more](/cms)
 
 ## Try it out!
 
