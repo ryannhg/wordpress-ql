@@ -1,6 +1,6 @@
+const path = require('path')
 const fs = require('fs')
 const yaml = require('yaml')
-// const pluralize = require('pluralize')
 
 const readFile = (path) =>
   new Promise((resolve, reject) =>
@@ -333,11 +333,12 @@ const makePostType = ({ key, value: { options = {}, taxonomies } }) => ({
   }
 })
 
+// Taxonomies
 const makeTaxonomies = ({ posts }) =>
-  console.log('TODO: taxonomies') || []
+  console.log('TODO: taxonomies') || {}
 
 const start = _ =>
-  readFile('../config.yaml')
+  readFile(path.join('..', 'config.yaml'))
     .then(yaml.parse)
     .then(validate)
     .then(config => [
@@ -346,11 +347,15 @@ const start = _ =>
       makeTaxonomies(config)
     ])
     .then(([fields, postTypes, taxomonies]) => [
-      { filename: '../dist/fields.json', data: fields },
-      { filename: '../dist/post_types.json', data: postTypes },
-      { filename: '../dist/taxonomies.json', data: taxomonies }
+      ...fields.map(field => ({
+        filename: path.join('..', 'dist', 'acf-json', `${field.key}.json`),
+        data: field
+      })),
+      { filename: path.join('..', 'dist', 'post_types.json'), data: postTypes },
+      { filename: path.join('..', 'dist', 'taxonomies.json'), data: taxomonies }
     ])
-    .then(mkdir('../dist'))
+    .then(mkdir(path.join('..', 'dist')))
+    .then(mkdir(path.join('..', 'dist', 'acf-json')))
     .then(files => Promise.all(
       files.map(({ filename, data }) => writeTo(filename, data)))
     )

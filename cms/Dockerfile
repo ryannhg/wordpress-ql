@@ -23,15 +23,18 @@ USER www-data
 
 # Copy theme for ACF Sync
 COPY ./themes /themes
+COPY ./dist/acf-json /themes/headless-theme/acf-json
 
 # Copy CPTUI exports
-COPY examples/post_types.json /post_types.json
-COPY examples/taxonomies.json /taxonomies.json
+COPY dist/post_types.json /post_types.json
+COPY dist/taxonomies.json /taxonomies.json
 
 # Create wp-config
 CMD ( \
 # Download latest wordpress
-wp core download --skip-content  \
+wp core download \
+--version=4.9.9 \
+--skip-content  \
 # Create wp-config
 && wp config create \
 --dbhost=$DB_HOST \
@@ -57,9 +60,11 @@ wp core download --skip-content  \
 && cp -r /themes /var/www/html/wp-content/themes \
 && wp theme activate headless-theme \
 # Import CPTUI post types and taxonomies
-&& wp cptui import --type=post_type --data-path=/post_types.json \
-&& wp cptui import --type=taxonomy --data-path=/taxonomies.json \
-# Disable admin user \
+&& (wp cptui import --type=post_type --data-path=/post_types.json || true) \
+&& (wp cptui import --type=taxonomy --data-path=/taxonomies.json || true) \
+# Wipe out default posts
+&& wp site empty --yes \
+# Disable admin user
 && wp user set-role 1 editor \
 # Skip all that if any step fails (Wordpress is already installed)
 || true) \

@@ -1,9 +1,9 @@
 {
-    "key": "group_5c07700b29266",
-    "title": "Professionals",
+    "key": "group_people_1",
+    "title": "People",
     "fields": [
         {
-            "key": "field_5c077017af0fa",
+            "key": "field_name_7",
             "label": "Name",
             "name": "name",
             "type": "group",
@@ -18,7 +18,7 @@
             "layout": "block",
             "sub_fields": [
                 {
-                    "key": "field_5c07702faf0fb",
+                    "key": "field_first_8",
                     "label": "First",
                     "name": "first",
                     "type": "text",
@@ -30,14 +30,31 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5c077043af0fc",
+                    "key": "field_middle_9",
+                    "label": "Middle",
+                    "name": "middle",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_last_10",
                     "label": "Last",
                     "name": "last",
                     "type": "text",
@@ -49,7 +66,6 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
@@ -58,31 +74,9 @@
             ]
         },
         {
-            "key": "field_5c077076af0fe",
-            "label": "Title",
-            "name": "title",
-            "type": "taxonomy",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "taxonomy": "titles",
-            "field_type": "select",
-            "allow_null": 1,
-            "add_term": 0,
-            "save_terms": 0,
-            "load_terms": 0,
-            "return_format": "id",
-            "multiple": 0
-        },
-        {
-            "key": "field_5c0770b7af0ff",
-            "label": "Biography",
-            "name": "biography",
+            "key": "field_bio_11",
+            "label": "Bio",
+            "name": "bio",
             "type": "group",
             "instructions": "",
             "required": 0,
@@ -95,10 +89,28 @@
             "layout": "block",
             "sub_fields": [
                 {
-                    "key": "field_5c0770ceaf100",
+                    "key": "field_main_12",
                     "label": "Main",
                     "name": "main",
-                    "type": "wysiwyg",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_additional_13",
+                    "label": "Additional",
+                    "name": "additional",
+                    "type": "text",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
@@ -107,39 +119,48 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
-                    "tabs": "all",
-                    "toolbar": "full",
-                    "media_upload": 1,
-                    "delay": 0
-                },
-                {
-                    "key": "field_5c077127af101",
-                    "label": "Additional",
-                    "name": "additional",
-                    "type": "wysiwyg",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": [
-                        [
-                            {
-                                "field": "field_5c0770ceaf100",
-                                "operator": "!=empty"
-                            }
-                        ]
-                    ],
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "tabs": "all",
-                    "toolbar": "full",
-                    "media_upload": 1,
-                    "delay": 0
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
                 }
             ]
+        },
+        {
+            "key": "field_email_14",
+            "label": "Email",
+            "name": "email",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_phone_15",
+            "label": "Phone",
+            "name": "phone",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         }
     ],
     "location": [
@@ -147,7 +168,7 @@
             {
                 "param": "post_type",
                 "operator": "==",
-                "value": "professionals"
+                "value": "people"
             }
         ]
     ],
