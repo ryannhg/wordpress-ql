@@ -9,6 +9,9 @@ pages:
       hero:
         title: Text
         subtitle: Text?
+      about:
+        title: Text
+        content: Text
   people:
     options:
       label: People Landing
@@ -32,3 +35,9 @@ posts:
         additional: Text?
       email: Text
       phone: Text
+  services:
+    options:
+      label: Services
+      singular_label: Service
+    fields:
+      title: Text
