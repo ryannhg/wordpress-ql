@@ -41,13 +41,9 @@ const fromKvp = [
   {}
 ]
 
-const smush = [
-  (big, small) => big.concat(small),
-  []
-]
-
 // Field groups
 const makeFieldGroups = ({ posts, pages }) => [
+  pageFieldGroup(kvp(pages)),
   ...kvp(posts).map(fieldGroup)
 ]
 let counter = {}
@@ -56,6 +52,7 @@ const id = key => {
   return counter[key]++
 }
 const groupKey = (name) => `group_${name}_${id('group')}`
+const pageFieldKey = `field_page_type`
 const fieldKey = (name) => `field_${name}_${id('field')}`
 
 const capitalize = (str = '') =>
@@ -123,6 +120,102 @@ const fieldGroup = ({ key, value: { options, fields } }) => ({
   description: ''
 })
 
+const pageLabel = (key, options) =>
+  options.label || prettify(key)
+
+const pageChoices = pages =>
+  pages.reduce((obj, { key, value: { options = {} } }) => {
+    obj[key] = pageLabel(key, options)
+    return obj
+  }, {})
+
+const pageFields = (pages) =>
+  pages.map(({ key, value: { options = {}, fields } }) => ({
+    'key': fieldKey(key),
+    'label': pageLabel(key, options),
+    'name': key,
+    'type': 'group',
+    'instructions': '',
+    'required': 0,
+    'conditional_logic': [
+      [
+        {
+          'field': pageFieldKey,
+          'operator': '==',
+          'value': key
+        }
+      ]
+    ],
+    'wrapper': {
+      'width': '',
+      'class': '',
+      'id': ''
+    },
+    'layout': 'block',
+    'sub_fields': makeFields(fields)
+  }))
+
+const pageFieldGroup = (pages) => ({
+  'key': groupKey('pages'),
+  'title': 'Pages',
+  'fields': [
+    {
+      'key': pageFieldKey,
+      'label': 'Page Type',
+      'name': 'page_type',
+      'type': 'select',
+      'instructions': '',
+      'required': 1,
+      'conditional_logic': 0,
+      'wrapper': {
+        'width': '',
+        'class': '',
+        'id': ''
+      },
+      'choices': pageChoices(pages),
+      'default_value': [],
+      'allow_null': 0,
+      'multiple': 0,
+      'ui': 0,
+      'return_format': 'value',
+      'ajax': 0,
+      'placeholder': ''
+    },
+    ...pageFields(pages)
+  ],
+  'location': [
+    [
+      {
+        'param': 'post_type',
+        'operator': '==',
+        'value': 'page'
+      }
+    ]
+  ],
+  'menu_order': 0,
+  'position': 'normal',
+  'style': 'seamless',
+  'label_placement': 'top',
+  'instruction_placement': 'label',
+  'hide_on_screen': [
+    'the_content',
+    'excerpt',
+    'discussion',
+    'comments',
+    'revisions',
+    'slug',
+    'author',
+    'format',
+    'page_attributes',
+    'featured_image',
+    'categories',
+    'tags',
+    'send-trackbacks'
+  ],
+  'active': 1,
+  'description': ''
+})
+
 const fromString = field =>
   field.length > 0 && field[field.length - 1] === '?'
     ? ({ type: field.slice(0, field.length - 1), required: false })
@@ -175,9 +268,8 @@ const mkdir = path => data => {
 }
 
 // Post Types
-const makePostTypes = ({ posts }) => [
+const makePostTypes = ({ posts }) =>
   kvp(posts).map(makePostType).reduce(...fromKvp)
-].reduce(...smush)
 
 const makePostType = ({ key, value: { options = {}, taxonomies } }) => ({
   key,

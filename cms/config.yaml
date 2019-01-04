@@ -9,7 +9,6 @@ pages:
       hero:
         title: Text
         subtitle: Text?
-        image: Image
   people:
     options:
       label: People Landing
