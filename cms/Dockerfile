@@ -24,6 +24,10 @@ USER www-data
 # Copy theme for ACF Sync
 COPY ./themes /themes
 
+# Copy CPTUI exports
+COPY examples/post_types.json /post_types.json
+COPY examples/taxonomies.json /taxonomies.json
+
 # Create wp-config
 CMD ( \
 # Download latest wordpress
@@ -53,6 +57,9 @@ wp core download --skip-content  \
 # Copy over themes
 && cp -r /themes /var/www/html/wp-content/themes \
 && wp theme activate headless-theme \
+# Import CPTUI post types and taxonomies
+&& wp cptui import --type=post_type --data-path=/post_types.json \
+&& wp cptui import --type=taxonomy --data-path=/taxonomies.json \
 # Disable admin user \
 # && wp user set-role 1 editor \ 
 && wp server --host=0.0.0.0
