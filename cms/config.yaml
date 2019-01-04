@@ -1,6 +1,5 @@
-version: 1
-
 pages:
+
   home:
     options:
       label: Homepage
@@ -12,6 +11,7 @@ pages:
       about:
         title: Text
         content: Text
+
   people:
     options:
       label: People Landing
@@ -21,6 +21,7 @@ pages:
         title: Text
 
 posts:
+
   people:
     options:
       label: People
@@ -35,6 +36,7 @@ posts:
         additional: Text?
       email: Text
       phone: Text
+
   services:
     options:
       label: Services

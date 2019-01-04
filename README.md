@@ -11,6 +11,12 @@ This project hopes to leverage the work Wordpress has done, and combine it with 
 
 ## Try it out!
 
+1. (Temporarily a manual step) Generate models with `./cms/parser/index.js`
+  - `cd cms/parser`
+  - `npm install`
+  - `node index.js`
+  - `cd ../..`
+
 1. __`docker-compose up`__
 
 
