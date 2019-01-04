@@ -58,3 +58,41 @@ posts:
 
 ### Fields (`fields`)
 
+Fields can be provided in one of two ways:
+
+1. Directly after the field name, with the default options.
+    ```yaml
+    posts:
+      people:
+        fields:
+          name: Text
+          birthday: Date
+          bio: RichText?
+    ```
+
+1. With two keys: `type` and `options`, allowing customization.
+    ```yaml
+    posts:
+      people:
+        fields:
+          name:
+            type: Text
+          birthday:
+            type: Date
+          bio:
+            type: RichText
+            options:
+              optional: true
+    ```
+
+Also, `?` is shorthand for an optional field.
+
+Field Name | Description
+--- | ---
+`Text` | A single line of text.
+`RichText` | A WYSIWYG editor. ([Globally configurable]())
+`Date` | A date picker.
+`Datetime` | A datetime picker.
+
+
+

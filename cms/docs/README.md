@@ -41,6 +41,6 @@ posts:
       email: Text
       phone: Text
       bio:
-        main: Wysiwyg
-        additional: Wysiwyg?
+        main: RichText
+        additional: RichText?
 ```
