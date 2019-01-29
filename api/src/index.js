@@ -4,7 +4,7 @@ const db = require('./db')
 // The GraphQL schema
 const typeDefs = gql`
   type Query {
-    professionals: [Professional]
+    people: [Person]
   }
 
   interface Post {
@@ -13,12 +13,12 @@ const typeDefs = gql`
     _slug: String!
   }
 
-  type Professional implements Post {
+  type Person implements Post {
     _id: ID!
     _title: String!
     _slug: String!
     name: Name
-    biography: Bio
+    bio: Bio
   }
 
   type Name {
@@ -35,7 +35,7 @@ const typeDefs = gql`
 // A map of functions which return data for the schema.
 const resolvers = {
   Query: {
-    professionals: _ => db.get('professionals')
+    people: _ => db.get('people')
   }
 }
 
