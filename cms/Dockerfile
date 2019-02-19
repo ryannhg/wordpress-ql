@@ -23,11 +23,11 @@ USER www-data
 
 # Copy theme for ACF Sync
 COPY ./themes /themes
-COPY ./dist/acf-json /themes/headless-theme/acf-json
+COPY ./parser/dist/acf-json /themes/headless-theme/acf-json
 
 # Copy CPTUI exports
-COPY dist/post_types.json /post_types.json
-COPY dist/taxonomies.json /taxonomies.json
+COPY parser/dist/post_types.json /post_types.json
+COPY parser/dist/taxonomies.json /taxonomies.json
 
 # Create wp-config
 CMD ( \

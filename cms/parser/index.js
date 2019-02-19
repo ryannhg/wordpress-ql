@@ -338,8 +338,9 @@ const makeTaxonomies = ({ posts }) =>
   console.log('TODO: taxonomies') || {}
 
 const start = _ =>
-  readFile(path.join('..', 'config.yaml'))
+  readFile(path.join('config.yaml'))
     .then(yaml.parse)
+    .catch(_ => Promise.reject(String('Could not parse YAML')))
     .then(validate)
     .then(config => [
       makeFieldGroups(config),
@@ -348,14 +349,14 @@ const start = _ =>
     ])
     .then(([fields, postTypes, taxomonies]) => [
       ...fields.map(field => ({
-        filename: path.join('..', 'dist', 'acf-json', `${field.key}.json`),
+        filename: path.join('dist', 'acf-json', `${field.key}.json`),
         data: field
       })),
-      { filename: path.join('..', 'dist', 'post_types.json'), data: postTypes },
-      { filename: path.join('..', 'dist', 'taxonomies.json'), data: taxomonies }
+      { filename: path.join('dist', 'post_types.json'), data: postTypes },
+      { filename: path.join('dist', 'taxonomies.json'), data: taxomonies }
     ])
-    .then(mkdir(path.join('..', 'dist')))
-    .then(mkdir(path.join('..', 'dist', 'acf-json')))
+    .then(mkdir(path.join('dist')))
+    .then(mkdir(path.join('dist', 'acf-json')))
     .then(files => Promise.all(
       files.map(({ filename, data }) => writeTo(filename, data)))
     )

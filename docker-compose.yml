@@ -1,17 +1,17 @@
 version: '3'
 services:
 
-  api:
-    image: node:10
-    environment:
-      DB_HOST: db
-    ports:
-      - 4000:4000
-    volumes:
-      - ./api/src:/src
-      - ./api/package.json:/package.json
-      - ./api/package-lock.json:/package-lock.json
-    command: [ 'npm', 'run', 'docker' ]
+  # api:
+  #   image: node:10
+  #   environment:
+  #     DB_HOST: db
+  #   ports:
+  #     - 4000:4000
+  #   volumes:
+  #     - ./api/src:/src
+  #     - ./api/package.json:/package.json
+  #     - ./api/package-lock.json:/package-lock.json
+  #   command: [ 'npm', 'run', 'docker' ]
 
   db:
     image: mariadb
@@ -20,6 +20,18 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: password
 
+  yaml:
+    build: ./cms/parser
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - SHELL=/bin/bash
+    volumes:
+      - ./cms/parser/index.js:/usr/src/app/index.js
+      - ./cms/parser/package.json:/usr/src/app/package.json
+      - ./cms/parser/config.yaml:/usr/src/app/config.yaml
+      - ./cms/parser/dist:/usr/src/app/dist
+
+
   wordpress:
     build:
       context: ./cms
@@ -27,5 +39,7 @@ services:
       - db:mysql
     ports:
       - 8080:8080
+    volumes:
+      - ./cms/parser/dist/acf-json:/var/www/html/wp-content/themes/headless-theme/acf-json
     environment:
       MYSQL_ROOT_PASSWORD: password

@@ -4,12 +4,16 @@
   "description": "Convert YAML to Wordpress JSON",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index",
+    "dev": "npm start && chokidar config.yaml -c \"npm start\""
   },
   "author": "Ryan Haskell-Glatz",
   "license": "ISC",
   "dependencies": {
     "pluralize": "^7.0.0",
     "yaml": "^1.0.3"
+  },
+  "devDependencies": {
+    "chokidar-cli": "1.2.2"
   }
 }
