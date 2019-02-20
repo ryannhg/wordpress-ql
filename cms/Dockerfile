@@ -22,8 +22,8 @@ RUN curl -sL https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_
 USER www-data
 
 # Copy theme for ACF Sync
-COPY ./themes /themes
-COPY ./parser/dist/acf-json /themes/headless-theme/acf-json
+COPY themes /themes
+COPY parser/dist/acf-json /themes/headless-theme/acf-json
 
 # Copy CPTUI exports
 COPY parser/dist/post_types.json /post_types.json
@@ -55,7 +55,7 @@ wp core download \
 --skip-email \
 # Install plugins
 && wp plugin install custom-post-type-ui --version=1.6.1 --activate \
-&& wp plugin install advanced-custom-fields --version=5.7.7 --activate \
+&& wp plugin install https://github.com/wp-premium/advanced-custom-fields-pro/archive/5.7.10.zip --force --activate \
 # Copy over themes
 && cp -r /themes /var/www/html/wp-content/themes \
 && wp theme activate headless-theme \

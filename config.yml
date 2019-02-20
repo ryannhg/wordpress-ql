@@ -1,0 +1,32 @@
+pages:
+posts:
+  'Person':
+    options:
+      name: people
+      label: People
+    fields:
+      name:
+        first:
+          type: text
+          label: First Name
+        middle:
+          type: text?
+          label: Middle Name
+        last:
+          type: text
+          label: Last Name
+      contact:
+        type: group
+        label: Contact Info
+        fields:
+          email: text
+          phone: text?
+      details:
+        type: tab
+      bio:
+        main: wysiwyg
+        additional: wysiwyg?
+  'BlogPost':
+    authors: Person[]
+    content: wysiwyg
+

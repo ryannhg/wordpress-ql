@@ -2,15 +2,15 @@
   "name": "@wordpressql/parser",
   "version": "1.0.0",
   "description": "Convert YAML to Wordpress JSON",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node index",
-    "dev": "npm start && chokidar config.yaml -c \"npm start\""
+    "start": "node src/index",
+    "dev": "npm start && chokidar ../../config.yml -c \"npm start\""
   },
   "author": "Ryan Haskell-Glatz",
   "license": "ISC",
   "dependencies": {
-    "pluralize": "^7.0.0",
+    "pluralize": "7.0.0",
     "yaml": "^1.0.3"
   },
   "devDependencies": {

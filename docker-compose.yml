@@ -13,28 +13,26 @@ services:
   #     - ./api/package-lock.json:/package-lock.json
   #   command: [ 'npm', 'run', 'docker' ]
 
-  db:
+  db: # Database used by Wordpress
     image: mariadb
     ports:
       - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: password
 
-  yaml:
+  yaml: # Converts YAML to Wordpress JSON
     build: ./cms/parser
     environment:
       - CHOKIDAR_USEPOLLING=true
       - SHELL=/bin/bash
     volumes:
-      - ./cms/parser/index.js:/usr/src/app/index.js
+      - ./cms/parser/src:/usr/src/app/src
       - ./cms/parser/package.json:/usr/src/app/package.json
-      - ./cms/parser/config.yaml:/usr/src/app/config.yaml
+      - ./config.yml:/usr/config.yml
       - ./cms/parser/dist:/usr/src/app/dist
 
-
-  wordpress:
-    build:
-      context: ./cms
+  wordpress: # PHP server running wordpress
+    build: ./cms
     links:
       - db:mysql
     ports:
