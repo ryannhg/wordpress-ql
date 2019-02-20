@@ -256,8 +256,14 @@ const fields = {
       }))
 }
 
-// Groups and repeaters can't have required fields
-const unrequire = (field) => ({ ...field, required: 0 })
+// Repeaters can't have required fields
+const unrequire = (field) => ({
+  ...field,
+  fields: field.fields instanceof Array
+    ? field.fields.map(unrequire)
+    : field.fields,
+  required: 0
+})
 
 const makeField = (field) =>
   fields[field.type]
