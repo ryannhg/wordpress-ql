@@ -167,9 +167,7 @@ const fields = {
     post_type: ref.split(' '),
     taxonomy: '',
     filters: [
-      'search',
-      'post_type',
-      'taxonomy'
+      'search'
     ],
     elements: '',
     min: '',
