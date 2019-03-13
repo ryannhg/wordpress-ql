@@ -37,7 +37,7 @@ services:
       - db:mysql
     ports:
       - 8080:8080
-    volumes:
-      - ./cms/parser/dist/acf-json:/var/www/html/wp-content/themes/headless-theme/acf-json
+    # volumes:
+    #   - ./cms/parser/dist/acf-json:/var/www/html/wp-content/themes/headless-theme/acf-json
     environment:
       MYSQL_ROOT_PASSWORD: password

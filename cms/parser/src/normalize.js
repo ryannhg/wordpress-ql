@@ -29,12 +29,14 @@ const errors = {
   missingType: (key) => `${key} field doesn't provide it's type.`
 }
 
+const debug = a => console.log(a) || a
+
 const normalize = {
   pages: pages => normalize.posts(pages),
   posts: posts => Promise.all(kvps(posts).map(normalize.post)),
   post: ({ key, value }) => {
     const hasFields = value && typeof value === 'object'
-    const { options, fields } = value || {}
+    const { options, fields, taxonomies } = value || {}
 
     if (options && fields) {
       return normalize.fields(fields)
@@ -43,7 +45,8 @@ const normalize = {
           label: postLabel(key),
           singular_label: postSingularLabel(key),
           ...value.options,
-          fields
+          fields,
+          taxonomies: taxonomies || []
         }))
     } else if (hasFields) {
       return normalize.post({
@@ -71,10 +74,12 @@ const normalize = {
           name: fieldName(key),
           label: fieldLabel(key),
           type,
-          ref,
           max,
           required,
           ...value,
+          ref: type === 'taxonomy'
+            ? postName(value && value.ref ? value.ref : ref)
+            : ref,
           fields
         }))
     } else if (isGroupShorthand) {
@@ -107,13 +112,35 @@ const typeInfo = (type) => {
   }
 }
 
+const map = fn => list => list.map(fn)
+
+const flatten = (list) =>
+  list.reduce((big, small) => big.concat(small), [])
+
+const extractTaxonomies = (posts) =>
+  Promise.resolve(posts)
+    .then(map(({ name, taxonomies }) =>
+      taxonomies.map(taxonomyName => ({
+        name: postName(taxonomyName),
+        label: postLabel(taxonomyName),
+        singular_label: postSingularLabel(taxonomyName),
+        types: [ name ] })
+      )
+    ))
+    .then(flatten)
+
 module.exports = {
   config: ({ pages, posts }) =>
     Promise.all([
       normalize.pages(pages || {}),
       normalize.posts(posts || {})
-    ]).then(([ pages, posts ]) => ({
-      pages,
-      posts
-    }))
+    ]).then(([ pages, posts ]) =>
+      extractTaxonomies(posts)
+        .then(debug)
+        .then(taxonomies => ({
+          pages,
+          posts,
+          taxonomies
+        }))
+    )
 }

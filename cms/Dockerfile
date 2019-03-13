@@ -26,8 +26,7 @@ COPY themes /themes
 COPY parser/dist/acf-json /themes/headless-theme/acf-json
 
 # Copy CPTUI exports
-COPY parser/dist/post_types.json /post_types.json
-COPY parser/dist/taxonomies.json /taxonomies.json
+COPY parser/dist/* /
 
 # Create wp-config
 CMD ( \
@@ -65,7 +64,7 @@ wp core download \
 # Wipe out default posts
 && wp site empty --yes \
 # Disable admin user
-&& wp user set-role 1 editor \
+# && wp user set-role 1 editor \
 # Skip all that if any step fails (Wordpress is already installed)
 || true) \
 # Start web server

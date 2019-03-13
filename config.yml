@@ -15,6 +15,9 @@ posts:
         last:
           type: text
           label: Last Name
+      title:
+        type: taxonomy
+        ref: Level
       contact:
         type: group
         label: Contact Info
@@ -26,7 +29,11 @@ posts:
       bio:
         main: wysiwyg
         additional: wysiwyg?
+    taxonomies:
+      - Level
   'BlogPost':
     authors: Person[]
     content: wysiwyg
+    # taxonomies:
+    #   - tags
 

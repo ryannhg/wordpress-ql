@@ -66,7 +66,7 @@ const taxonomy = ({
   name,
   label,
   singular_label: singular,
-  post_type_names: types = []
+  types = []
 }) => ({
   name,
   label,

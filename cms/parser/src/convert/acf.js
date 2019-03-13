@@ -176,7 +176,7 @@ const fields = {
     max,
     return_format: 'object'
   }),
-  taxonomy: ({ name, label, required = true, taxonomy }) => ({
+  taxonomy: ({ name, label, required = true, ref: taxonomy }) => ({
     key: fieldKey(name),
     label,
     name,

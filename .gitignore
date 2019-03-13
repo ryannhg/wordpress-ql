@@ -1,2 +1,4 @@
 node_modules
-cms/parser/dist
+
+# Generated JSON files
+cms/parser/dist/**/*.json
